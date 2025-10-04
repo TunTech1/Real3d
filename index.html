@@ -1,159 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TunTech</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: #1f2937;
+      background: #ffffff;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.5;
+    }
+
+    :root {
+      --brand: #0b48ed;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --surface: #ffffff;
+      --ring: rgba(11,72,237,0.2);
+    }
+
+    /* Layout */
+    .auth {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      min-height: 100svh;
+      background: var(--surface);
+    }
+    .auth-image { position: relative; overflow: hidden; }
+    .auth-image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+    .auth-panel { display: flex; align-items: center; justify-content: center; padding: 48px 32px; background: var(--surface); }
+    .panel-inner { width: min(520px, 100%); }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+
+    .icon-button {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 999px;
+      background: transparent; color: var(--text); cursor: pointer;
+    }
+    .brand { font-weight: 800; color: var(--brand); letter-spacing: 2px; font-family: Merriweather, Georgia, serif; }
+
+    .intro h1 { margin: 8px 0 8px; font-family: Merriweather, Georgia, serif; font-weight: 700; font-size: clamp(24px, 4vw, 32px); color: var(--text); }
+    .intro p { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+
+    /* Form */
+    form { margin-top: 6px; }
+    .form-control { margin-bottom: 16px; }
+    .form-control label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    input[type="text"], input[type="password"] {
+      width: 100%; height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; outline: none; transition: border-color .2s, box-shadow .2s; font-size: 14px;
+    }
+    input:focus { border-color: var(--brand); box-shadow: 0 0 0 4px var(--ring); }
+
+    .password-field { position: relative; }
+    .toggle-password { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: var(--brand); font-weight: 600; cursor: pointer; padding: 6px 8px; }
+
+    .error { display: block; margin-top: 6px; color: #b91c1c; font-size: 12px; min-height: 16px; }
+    .form-control.invalid input { border-color: #ef4444; }
+
+    .form-utility { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 16px; }
+    .checkbox { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+    .links { display: inline-flex; gap: 12px; }
+    .links .muted { color: var(--muted); font-size: 12px; text-decoration: none; }
+    .links .muted:hover { color: var(--text); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 46px; border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text); font-weight: 600; cursor: pointer; }
+    .btn.primary { background: var(--brand); color: #fff; border-color: var(--brand); margin-top: 6px; }
+    .btn.primary:hover { filter: brightness(0.95); }
+    .btn.google { background: #fff; }
+
+    .meta { margin: 10px 0 8px; text-align: center; font-size: 14px; color: var(--muted); }
+    .meta a { color: var(--brand); text-decoration: none; }
+
+    .divider { position: relative; height: 1px; background: var(--border); margin: 16px 0; }
+    .divider span { position: absolute; left: 50%; transform: translate(-50%, -50%); top: 50%; background: var(--surface); padding: 0 10px; font-size: 12px; color: var(--muted); }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .auth { grid-template-columns: 1fr; }
+      .auth-image { display: none; }
+      .auth-panel { padding: 32px 16px; }
+      .panel-inner { width: min(600px, 100%); }
+    }
+    @media (max-width: 420px) {
+      .panel-header { margin-bottom: 16px; }
+      .intro p { font-size: 13px; }
+      .btn { height: 44px; }
+    }
+  </style>
 </head>
 <body>
-    <div id="main">
-        <div data-scroll data-scroll-speed="-5" id="page1">
-            <nav>
-                <img src="./Screenshot 2023-05-30 220719.png" alt="">
-                <div id="right-nav">
-                    <button>Book a Demo</button>
-                    <button><i class="ri-menu-fill"></i></button>
-                </div>
-            </nav>
-            <div class="bottom-page1">
-                <h1>Experience Real  <br> Estate Agility</h1>
-                <div class="bottom-page1-inner">
-                    <h4>Step into a realm where innovation and practicality unite <br>to redefine how you experience the search for your dream home.</h4>
-                    <button>LEARN MORE</button>
-                </div>
-            </div>
-            <video src="https://thisismagma.com/wp-content/themes/magma/assets/home/hero/1.mp4?2" autoplay loop muted ></video>
-        </div>
-        <div id="page2">
-            <h2>Welcome to the future of real estate browsing with our cutting-edge 3D real estate website! </h2>
-            <h1>Picture this: you are scrolling through our website, and as you do, the properties come to life right before your eyes.
-            </h1>
-        </div>
-        <div id="page3">
-            <canvas></canvas>
-        </div>
-        <div id="page4">
-            <h3>For real estate enthusiasts and potential buyers, this is a game-changer.</h3>
-            <h1>Our 3D scrolling parallax allows you to connect with properties on a personal level, forming an emotional bond that goes beyond just bricks and mortar. It's about creating lasting memories and fulfilling dreams.</h1>
-        </div>
-        <div id="page5">
-            <canvas></canvas>
-        </div>
-        <div id="page6">
-            <h3>INCREASE YOUR DIGITAL TWIN TOKEN’S VALUE</h3>
-            <h1>DTT data increases the value of your digital asset by lowering operational costs, improving energy use, assisting commercialization, and boosting the liquidity of your building.</h1>
-        </div>
-        <div id="page7">
-            <div class="page7-cir">
-                <div class="page7-cir-inner"></div>
-            </div>
-            <canvas></canvas>
-        </div>
-        <div id="page8">
-            <div class="page8-bottom">
-                <h1>TunTech</h1>
-                <button>LEARN MORE</button>
-            </div>
-            <video src="https://thisismagma.com/wp-content/themes/magma/assets/home/glass/1.webm?2"autoplay loop muted></video>
-        </div>
-        <div id="page9">
-            <div class="left9">
-                <h1>What is <br> Magma?</h1>
-            </div>
-            <div class="right9">
-                <div class="right9-center"></div>
-            </div>
-        </div>
-        <div id="page10">
-            <div class="right10">
-                <div class="right10-inner">
-                    <h1>Web3 platform
-                    </h1>
-                    <p>Magma is a Web3 platform for all real estate stakeholders, which provides users with the ability to manage interactions between physical and digital assets through unique, and collectively generated, 3D representations of their buildings.</p>
-                </div>
-                <div class="right10-inner">
-                    <h1>The Digital Twin Token: The building’s unique digital copy</h1>
-                    <p>Magma uses blockchain technology to record essential data, which enables transparent, traceable, and immutable streams of information to be readily accessible to its users. Magma smart contracts are built with this blockchain data to expedite tasks like requests for proposals, lease agreements, and services arrangements.</p>
-                </div>
-                <div class="right10-inner">
-                    <h1>An Index of digitization</h1>
-                    <p>The Magma Index provides valuable insight for decision-making regarding data-sharing, service-creating, and operational/environmental expectations.</p>
-                </div>
-            </div>
-        </div>
-        <div id="page11">
-            <h1>Recent Blog</h1>
-            <div class="page11-inner">
-                <div class="left11">
-                    <img src="https://thisismagma.com/wp-content/uploads/2023/05/thisismagma.com-magma-a-la-3eme-edition-du-tech-talk-de-cbre-france-1684942208038.jpeg" alt="">
-                </div>
-                <div class="right11">
-                    <h4>MAY 30,2023</h4>
-                    <h1>Magma At CBRE France's 3rd Tech Talk</h1>
+  <main class="auth">
+    <section class="auth-image" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1920&auto=format&fit=crop" alt="Happy people at home" />
+    </section>
 
-                </div>
-            </div>
-            <div class="page11-inner">
-                <div class="left11">
-                    <img src="https://thisismagma.com/wp-content/uploads/2023/05/thisismagma.com-workshop-blockchain-et-actif-digitaux-sba-16-min-scaled.jpg" alt="">
-                </div>
-                <div class="right11">
-                    <h4>MAY 30,2023</h4>
-                    <h1>Magma At CBRE France's 3rd Tech Talk</h1>
-
-                </div>
-            </div>
-            <div class="page11-inner">
-                <div class="left11">
-                    <img src="https://thisismagma.com/wp-content/uploads/2023/03/magma.wp2.cubdev.com-exploring-the-potential-of-real-estate-tokenization-digital-twins-magma.png" alt="">
-                </div>
-                <div class="right11">
-                    <h4>MAY 30,2023</h4>
-                    <h1>Magma At CBRE France's 3rd Tech Talk</h1>
-
-                </div>
-            </div>
-          
+    <section class="auth-panel">
+      <div class="panel-inner">
+        <div class="panel-header">
+          <button class="icon-button back-btn" aria-label="Go back">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="brand" aria-label="Logo">W P</div>
         </div>
-        <div id="page12">
-            <div class="page12-inner">
-                <h1>Featured In</h1>
-                <p>Thrilled to have been featured in several prominent media <br> outlets and leading professionals across the world’s best <br> real estate and web3 institutions.</p>
-            </div>
-        </div>
-        <div id="page13">
-            <h1>Become an
-                <br>
-                early adopter</h1>
-                <button>BOOK A DEMO</button>
-        </div>
-        <div id="page14">
-            <div class="page14-inner">
-                <h1>Twitter</h1>
-                <i class="ri-arrow-right-up-line"></i>
-                <div class="center14"></div>
-            </div>
-            <div class="page14-inner">
-                <h1>LinkedIn</h1>
-                <i class="ri-arrow-right-up-line"></i>
-                <div class="center14"></div>
 
-            </div>
-            <div class="page14-inner">
-                <h1>Instagram</h1>
-                <i class="ri-arrow-right-up-line"></i>
-                <div class="center14"></div>
-
-            </div>
+        <div class="intro">
+          <h1>Welcome Back</h1>
+          <p>Log in to manage your properties, shop home items, or connect with agents</p>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js" integrity="sha512-qF6akR/fsZAB4Co1QDDnUXWnaQseLGXoniuSuSlPQK6+aWhlMZcHzkasCSlnWoe+TJuudlka1/IQ01Dnhgq95g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/ScrollTrigger.min.js" integrity="sha512-IHDCHrefnBT3vOCsvdkMvJF/MCPz/nBauQLzJkupa4Gn4tYg5a6VGyzIrjo6QAUy3We5HFOZUlkUpP0dkgE60A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="script.js"></script>
+        <form id="login-form" novalidate>
+          <div class="form-control">
+            <label for="emailOrPhone">Email or Phone number</label>
+            <input id="emailOrPhone" name="emailOrPhone" type="text" placeholder="Enter your email or phone number" autocomplete="username" required />
+            <small class="error" data-error-for="emailOrPhone"></small>
+          </div>
+
+          <div class="form-control">
+            <label for="password">Password</label>
+            <div class="password-field">
+              <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+              <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+            </div>
+            <small class="error" data-error-for="password"></small>
+          </div>
+
+          <div class="form-utility">
+            <label class="checkbox">
+              <input type="checkbox" id="rememberMe" name="rememberMe" />
+              <span>Remember password</span>
+            </label>
+            <div class="links">
+              <a href="#" class="muted">Forgot password?</a>
+              <a href="#" class="muted">Reset</a>
+            </div>
+          </div>
+
+          <button type="submit" class="btn primary">Log in</button>
+
+          <p class="meta">Don't have an account? <a href="#">Sign up</a></p>
+
+          <div class="divider" role="separator"><span>OR</span></div>
+
+          <button type="button" class="btn google" id="googleLogin">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18" />
+            <span>Log in with Google</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Login page interactions
+    const form = document.getElementById('login-form');
+    const emailOrPhone = document.getElementById('emailOrPhone');
+    const password = document.getElementById('password');
+    const rememberMe = document.getElementById('rememberMe');
+    const togglePasswordBtn = document.querySelector('.toggle-password');
+    const backBtn = document.querySelector('.back-btn');
+
+    function showError(inputEl, message) {
+      const control = inputEl.closest('.form-control');
+      const errorEl = control.querySelector('.error');
+      control.classList.add('invalid');
+      errorEl.textContent = message || '';
+    }
+    function clearError(inputEl) {
+      const control = inputEl.closest('.form-control');
+      const errorEl = control.querySelector('.error');
+      control.classList.remove('invalid');
+      errorEl.textContent = '';
+    }
+    function isEmail(value) { return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(value); }
+    function isPhone(value) { return /^[+]?\d[\d\s-]{8,}$/.test(value); }
+    function isEmailOrPhone(value) { return isEmail(value) || isPhone(value); }
+
+    // Load remembered credential
+    (function hydrateRemembered() {
+      try {
+        const saved = localStorage.getItem('login.remembered');
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (data && data.username) {
+            emailOrPhone.value = data.username;
+            rememberMe.checked = true;
+          }
+        }
+      } catch (_) {}
+    })();
+
+    // Toggle password visibility
+    if (togglePasswordBtn && password) {
+      togglePasswordBtn.addEventListener('click', () => {
+        const showing = password.type === 'text';
+        password.type = showing ? 'password' : 'text';
+        togglePasswordBtn.textContent = showing ? 'Show' : 'Hide';
+        togglePasswordBtn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+      });
+    }
+    // Back button
+    backBtn?.addEventListener('click', () => { if (history.length > 1) history.back(); });
+    // Inline validation
+    emailOrPhone?.addEventListener('input', () => {
+      if (emailOrPhone.value.trim() && !isEmailOrPhone(emailOrPhone.value.trim())) {
+        showError(emailOrPhone, 'Enter a valid email or phone number');
+      } else { clearError(emailOrPhone); }
+    });
+    password?.addEventListener('input', () => {
+      if (password.value.length < 6) { showError(password, 'Password must be at least 6 characters'); }
+      else { clearError(password); }
+    });
+    // Submit handler
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = emailOrPhone.value.trim();
+      const pwd = password.value;
+      let valid = true;
+      if (!isEmailOrPhone(username)) { showError(emailOrPhone, 'Enter a valid email or phone number'); valid = false; }
+      if (pwd.length < 6) { showError(password, 'Password must be at least 6 characters'); valid = false; }
+      if (!valid) return;
+      try {
+        if (rememberMe.checked) localStorage.setItem('login.remembered', JSON.stringify({ username }));
+        else localStorage.removeItem('login.remembered');
+      } catch (_) {}
+      const submitBtn = form.querySelector('.btn.primary');
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true; submitBtn.textContent = 'Logging in…';
+      await new Promise(r => setTimeout(r, 900));
+      submitBtn.disabled = false; submitBtn.textContent = original;
+      alert('Login submitted (demo)');
+    });
+    // Google button demo
+    document.getElementById('googleLogin')?.addEventListener('click', () => {
+      alert('Google login clicked (demo)');
+    });
+  </script>
 </body>
 </html>
